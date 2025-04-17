@@ -5,6 +5,7 @@ from typing import Optional, List
 
 from fastapi import HTTPException
 from youtube_transcript_api import YouTubeTranscriptApi
+from youtube_transcript_api.proxies import WebshareProxyConfig
 
 class YouTubeTools:
     @staticmethod
@@ -79,9 +80,19 @@ class YouTubeTools:
         try:
             captions = None
             if languages:
-                captions = YouTubeTranscriptApi.get_transcript(video_id, languages=languages)
+                captions = YouTubeTranscriptApi(
+                            proxy_config=WebshareProxyConfig(
+                                    proxy_username="dyrbhgir",
+                                    proxy_password="1h8jv2va27kf",
+                                )
+                    ).get_transcript(video_id, languages=languages)
             else:
-                captions = YouTubeTranscriptApi.get_transcript(video_id)
+                captions = YouTubeTranscriptApi(
+                            proxy_config=WebshareProxyConfig(
+                                    proxy_username="dyrbhgir",
+                                    proxy_password="1h8jv2va27kf",
+                                )
+                    ).get_transcript(video_id)
             
             if captions:
                 return " ".join(line["text"] for line in captions)
@@ -103,7 +114,12 @@ class YouTubeTools:
             raise HTTPException(status_code=400, detail="Error getting video ID from URL")
 
         try:
-            captions = YouTubeTranscriptApi.get_transcript(video_id, languages=languages or ["en"])
+            captions = YouTubeTranscriptApi(
+                            proxy_config=WebshareProxyConfig(
+                                    proxy_username="dyrbhgir",
+                                    proxy_password="1h8jv2va27kf",
+                                )
+                    ).get_transcript(video_id, languages=languages or ["en"])
             timestamps = []
             for line in captions:
                 start = int(line["start"])
