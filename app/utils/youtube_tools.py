@@ -80,19 +80,9 @@ class YouTubeTools:
         try:
             captions = None
             if languages:
-                captions = YouTubeTranscriptApi(
-                            proxy_config=WebshareProxyConfig(
-                                    proxy_username="dyrbhgir",
-                                    proxy_password="1h8jv2va27kf",
-                                )
-                    ).get_transcript(video_id, languages=languages)
+                captions = YouTubeTranscriptApi.get_transcript(video_id, languages=languages)
             else:
-                captions = YouTubeTranscriptApi(
-                            proxy_config=WebshareProxyConfig(
-                                    proxy_username="dyrbhgir",
-                                    proxy_password="1h8jv2va27kf",
-                                )
-                    ).get_transcript(video_id)
+                captions = YouTubeTranscriptApi.get_transcript(video_id)
             
             if captions:
                 return " ".join(line["text"] for line in captions)
@@ -114,12 +104,7 @@ class YouTubeTools:
             raise HTTPException(status_code=400, detail="Error getting video ID from URL")
 
         try:
-            captions = YouTubeTranscriptApi(
-                            proxy_config=WebshareProxyConfig(
-                                    proxy_username="dyrbhgir",
-                                    proxy_password="1h8jv2va27kf",
-                                )
-                    ).get_transcript(video_id, languages=languages or ["en"])
+            captions = YouTubeTranscriptApi.get_transcript(video_id, languages=languages or ["en"])
             timestamps = []
             for line in captions:
                 start = int(line["start"])
